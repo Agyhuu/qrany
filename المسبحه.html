@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>المسبحة الإلكترونية المتطورة</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Tajawal', Arial, sans-serif;
+        }
+        
+        body {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.8s ease;
+            background-size: cover;
+            background-position: center;
+            background-color: #f5f5f5;
+            text-align: center;
+            overflow: hidden;
+        }
+        
+        .bg-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.7;
+        }
+        
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 500px;
+            z-index: 2;
+            transition: all 0.5s ease;
+        }
+        
+        h1 {
+            color: #274472;
+            margin-bottom: 20px;
+            font-size: 32px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, #274472, #5885AF, #274472);
+            border-radius: 3px;
+        }
+        
+        .counter-display {
+            font-size: 70px;
+            color: #274472;
+            font-weight: bold;
+            margin: 20px 0;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .total-count {
+            font-size: 20px;
+            color: #5885AF;
+            margin: 10px 0;
+            transition: color 0.3s ease;
+        }
+        
+        .session-info {
+            font-size: 16px;
+            color: #666;
+            margin: 5px 0 15px 0;
+        }
+        
+        .btn-area {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #274472;
+            color: white;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 15px rgba(0, 0, 0, 0.2);
+            background-color: #5885AF;
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tasbih-btn {
+            font-size: 24px;
+            padding: 20px 40px;
+            background-color: #41729F;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px auto;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .tasbih-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .tasbih-btn:active {
+            transform: scale(0.95);
+        }
+        
+        .background-selector {
+            margin: 20px 0;
+        }
+        
+        select {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            background-color: white;
+            font-size: 16px;
+            direction: rtl;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            width: 80%;
+            max-width: 300px;
+        }
+        
+        select:focus {
+            border-color: #5885AF;
+            outline: none;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .vibration {
+            animation: vibrate 0.15s linear;
+        }
+        
+        @keyframes vibrate {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(2px, -2px); }
+            60% { transform: translate(-2px, -2px); }
+            80% { transform: translate(2px, 2px); }
+            100% { transform: translate(0); }
+        }
+        
+        .presets {
+            margin: 15px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .preset-btns {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+            width: 100%;
+        }
+        
+        .preset-btn {
+            padding: 8px 12px;
+            font-size: 14px;
+            background-color: #5885AF;
+        }
+        
+        .achievement {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #41729F;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s, transform 0.5s;
+            font-size: 18px;
+        }
+        
+        .achievement.show {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+            animation: achievementEffect 3s ease-in-out;
+        }
+        
+        @keyframes achievementEffect {
+            0% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+            10% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            90% { opacity: 1; transform: translateX(-50%) translateY(0); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px); }
+        }
+        
+        footer {
+            margin-top: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            z-index: 2;
+        }
+        
+        .history-panel {
+            margin-top: 15px;
+            width: 100%;
+        }
+        
+        .history-btn {
+            width: 100%;
+            text-align: center;
+            padding: 10px;
+            border-radius: 5px;
+            background-color: #f0f0f0;
+            color: #333;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+        
+        .history-content {
+            display: none;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            padding: 15px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
+        
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        /* تعديلات للخلفيات المتحركة */
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        /* ألوان مختلفة للسمات */
+        .theme-blue {
+            --primary-color: #274472;
+            --secondary-color: #5885AF;
+            --accent-color: #41729F;
+        }
+        
+        .theme-green {
+            --primary-color: #2E7D32;
+            --secondary-color: #66BB6A;
+            --accent-color: #43A047;
+        }
+        
+        .theme-purple {
+            --primary-color: #5E35B1;
+            --secondary-color: #9575CD;
+            --accent-color: #7E57C2;
+        }
+        
+        /* زر الوضع الليلي */
+        .night-mode-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.3);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* وضع الليل */
+        body.night-mode {
+            background-color: #121212;
+        }
+        
+        body.night-mode .container {
+            background-color: rgba(30, 30, 30, 0.85);
+            color: #e0e0e0;
+        }
+        
+        body.night-mode h1,
+        body.night-mode .counter-display {
+            color: #90caf9;
+        }
+        
+        body.night-mode .total-count {
+            color: #64b5f6;
+        }
+        
+        body.night-mode .session-info {
+            color: #b0bec5;
+        }
+        
+        body.night-mode select,
+        body.night-mode .history-btn {
+            background-color: #333;
+            color: #e0e0e0;
+            border-color: #555;
+        }
+        
+        body.night-mode .history-content {
+            background-color: #2a2a2a;
+            color: #e0e0e0;
+        }
+        
+        body.night-mode .history-item {
+            border-bottom-color: #444;
+        }
+    </style>
+</head>
+<body class="theme-blue">
+    <div class="bg-particles" id="particles"></div>
+    
+    <button class="night-mode-toggle" id="nightModeToggle">🌙</button>
+    
+    <div class="container">
+        <h1>المسبحة الإلكترونية</h1>
+        
+        <div class="counter-display" id="counter">0</div>
+        <div class="total-count" id="totalCount">المجموع الكلي: 0</div>
+        <div class="session-info" id="sessionInfo">الجلسة الحالية: 0 دقيقة</div>
+        
+        <button class="tasbih-btn" id="countBtn">سبح</button>
+        
+        <div class="btn-area">
+            <button id="resetBtn">تصفير</button>
+            <button id="targetBtn">تحديد هدف</button>
+        </div>
+        
+        <div class="background-selector">
+            <label for="backgroundSelect">اختر الخلفية: </label>
+            <select id="backgroundSelect">
+                <option value="bg1">الخلفية 1 - مسجد</option>
+                <option value="bg2">الخلفية 2 - غروب</option>
+                <option value="bg3">الخلفية 3 - سماء نجمية</option>
+                <option value="bg4">الخلفية 4 - أزرق هادئ</option>
+                <option value="bg5">الخلفية 5 - أخضر طبيعي</option>
+                <option value="bg6">الخلفية 6 - بنفسجي</option>
+                <option value="bg7">الخلفية 7 - أمواج</option>
+            </select>
+        </div>
+        
+        <div class="presets">
+            <label>أذكار سريعة:</label>
+            <div class="preset-btns">
+                <button class="preset-btn" data-value="33">سبحان الله (33)</button>
+                <button class="preset-btn" data-value="33">الحمد لله (33)</button>
+                <button class="preset-btn" data-value="33">الله أكبر (33)</button>
+                <button class="preset-btn" data-value="100">استغفر الله (100)</button>
+            </div>
+        </div>
+        
+        <div class="btn-area">
+            <button id="saveBtn">حفظ العدد</button>
+            <button id="loadBtn">استرجاع العدد</button>
+        </div>
+        
+        <div class="history-panel">
+            <div class="history-btn" id="historyBtn">عرض السجل</div>
+            <div class="history-content" id="historyContent"></div>
+        </div>
+    </div>
+    
+    <div class="achievement" id="achievement"></div>
+    
+    <footer>تم التطوير بواسطة كلود - المسبحة الإلكترونية المتطورة</footer>
+
+    <script>
+        // العناصر
+        const counterDisplay = document.getElementById('counter');
+        const totalCountDisplay = document.getElementById('totalCount');
+        const sessionInfoDisplay = document.getElementById('sessionInfo');
+        const countBtn = document.getElementById('countBtn');
+        const resetBtn = document.getElementById('resetBtn');
+        const targetBtn = document.getElementById('targetBtn');
+        const backgroundSelect = document.getElementById('backgroundSelect');
+        const saveBtn = document.getElementById('saveBtn');
+        const loadBtn = document.getElementById('loadBtn');
+        const historyBtn = document.getElementById('historyBtn');
+        const historyContent = document.getElementById('historyContent');
+        const achievementDisplay = document.getElementById('achievement');
+        const presetBtns = document.querySelectorAll('.preset-btn');
+        const nightModeToggle = document.getElementById('nightModeToggle');
+        const particlesContainer = document.getElementById('particles');
+        
+        // المتغيرات العامة
+        let count = 0;
+        let totalCount = 0;
+        let sessionStart = new Date();
+        let targetCount = 0;
+        let sessionHistory = [];
+        let isNightMode = false;
+        let particles = [];
+        
+        // الخلفيات
+        const backgrounds = {
+            bg1: 'linear-gradient(135deg, #274472, #5885AF)',
+            bg2: 'linear-gradient(135deg, #F8B195, #F67280)',
+            bg3: 'linear-gradient(135deg, #0F2027, #203A43, #2C5364)',
+            bg4: 'linear-gradient(135deg, #4B6CB7, #182848)',
+            bg5: 'linear-gradient(135deg, #76B852, #8DC26F)',
+            bg6: 'linear-gradient(135deg, #614385, #516395)',
+            bg7: 'linear-gradient(135deg, #1A2980, #26D0CE)'
+        };
+        
+        // الإنجازات
+        const achievements = [
+            { count: 33, message: "أحسنت! أكملت 33 تسبيحة" },
+            { count: 99, message: "تهانينا! أنجزت 99 تسبيحة" },
+            { count: 100, message: "رائع! وصلت إلى 100 تسبيحة" },
+            { count: 500, message: "إنجاز رائع! 500 تسبيحة" },
+            { count: 1000, message: "إنجاز متميز! 1000 تسبيحة" }
+        ];
+        
+        // تحديث العداد
+        function updateCounter() {
+            counterDisplay.textContent = count;
+            totalCountDisplay.textContent = `المجموع الكلي: ${totalCount}`;
+            updateSessionTime();
+            
+            // التحقق من الإنجازات
+            checkAchievements();
+            
+            // التحقق من هدف التسبيح
+            if (targetCount > 0 && count >= targetCount) {
+                showAchievement(`تهانينا! لقد وصلت إلى هدفك: ${targetCount} تسبيحة`);
+                targetCount = 0;
+            }
+        }
+        
+        // تحديث وقت الجلسة
+        function updateSessionTime() {
+            const now = new Date();
+            const sessionDuration = Math.floor((now - sessionStart) / 60000); // بالدقائق
+            sessionInfoDisplay.textContent = `الجلسة الحالية: ${sessionDuration} دقيقة`;
+        }
+        
+        // عرض الإنجازات
+        function showAchievement(message) {
+            achievementDisplay.textContent = message;
+            achievementDisplay.classList.add('show');
+            
+            setTimeout(() => {
+                achievementDisplay.classList.remove('show');
+            }, 3000);
+        }
+        
+        // التحقق من الإنجازات
+        function checkAchievements() {
+            for (const achievement of achievements) {
+                if (count === achievement.count) {
+                    showAchievement(achievement.message);
+                    break;
+                }
+            }
+        }
+        
+        // إضافة للعداد
+        function incrementCounter() {
+            count++;
+            totalCount++;
+            updateCounter();
+            
+            // إضافة تأثير الاهتزاز
+            counterDisplay.classList.add('vibration');
+            setTimeout(() => {
+                counterDisplay.classList.remove('vibration');
+            }, 150);
+            
+            // إضافة تأثير الجسيمات عند التسبيح
+            createParticle();
+        }
+        
+        // تصفير العداد
+        function resetCounter() {
+            if (count > 0) {
+                // حفظ السجل قبل التصفير
+                addToHistory();
+                
+                count = 0;
+                updateCounter();
+            }
+        }
+        
+        // تحديد هدف للتسبيح
+        function setTargetCount() {
+            const target = prompt("أدخل عدد التسبيحات المستهدف:", "33");
+            if (target !== null && !isNaN(target) && parseInt(target) > 0) {
+                targetCount = parseInt(target);
+                showAchievement(`تم تحديد الهدف: ${targetCount} تسبيحة`);
+            }
+        }
+        
+        // تغيير الخلفية
+        function changeBackground() {
+            const selectedBg = backgroundSelect.value;
+            document.body.style.background = backgrounds[selectedBg];
+            
+            // تغيير لون الجسيمات حسب الخلفية
+            updateParticlesColor();
+        }
+        
+        // إضافة إلى السجل
+        function addToHistory() {
+            const now = new Date();
+            const sessionDuration = Math.floor((now - sessionStart) / 60000); // بالدقائق
+            
+            const historyItem = {
+                date: now.toLocaleDateString('ar-SA'),
+                time: now.toLocaleTimeString('ar-SA'),
+                count: count,
+                duration: sessionDuration
+            };
+            
+            sessionHistory.unshift(historyItem);
+            
+            // الاحتفاظ بآخر 10 جلسات فقط
+            if (sessionHistory.length > 10) {
+                sessionHistory.pop();
+            }
+            
+            // تحديث عرض السجل
+            updateHistoryDisplay();
+            
+            // تخزين السجل
+            localStorage.setItem('tasbihHistory', JSON.stringify(sessionHistory));
+            
+            // إعادة تعيين وقت بدء الجلسة
+            sessionStart = new Date();
+        }
+        
+        // تحديث عرض السجل
+        function updateHistoryDisplay() {
+            historyContent.innerHTML = '';
+            
+            if (sessionHistory.length === 0) {
+                historyContent.innerHTML = '<p>لا يوجد سجل حتى الآن</p>';
+                return;
+            }
+            
+            sessionHistory.forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <span>${item.date} - ${item.time}</span>
+                    <span>${item.count} تسبيحة (${item.duration} دقيقة)</span>
+                `;
+                historyContent.appendChild(historyItem);
+            });
+        }
+        
+        // حفظ العدد
+        function saveCount() {
+            localStorage.setItem('tasbihCount', count);
+            localStorage.setItem('tasbihTotalCount', totalCount);
+            localStorage.setItem('tasbihSessionStart', sessionStart.getTime());
+            
+            showAchievement('تم حفظ العدد بنجاح');
+        }
+        
+        // استرجاع العدد
+        function loadCount() {
+            const savedCount = localStorage.getItem('tasbihCount');
+            const savedTotalCount = localStorage.getItem('tasbihTotalCount');
+            const savedSessionStart = localStorage.getItem('tasbihSessionStart');
+            
+            if (savedCount !== null && savedTotalCount !== null) {
+                count = parseInt(savedCount);
+                totalCount = parseInt(savedTotalCount);
+                
+                if (savedSessionStart !== null) {
+                    sessionStart = new Date(parseInt(savedSessionStart));
+                }
+                
+                updateCounter();
+                showAchievement('تم استرجاع العدد بنجاح');
+            } else {
+                showAchievement('لا يوجد عدد محفوظ');
+            }
+        }
+        
+        // تبديل وضع الليل/النهار
+        function toggleNightMode() {
+            isNightMode = !isNightMode;
+            document.body.classList.toggle('night-mode', isNightMode);
+            nightModeToggle.textContent = isNightMode ? '☀️' : '🌙';
+            
+            // حفظ إعداد الوضع
+            localStorage.setItem('tasbihNightMode', isNightMode);
+        }
+        
+        // إنشاء جسيم
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            
+            // الحجم العشوائي
+            const size = Math.random() * 10 + 5;
+            particle.style.width = `${size}px`;
+            particle.style.height = `${size}px`;
+            
+            // الموقع العشوائي حول زر التسبيح
+            const btnRect = countBtn.getBoundingClientRect();
+            const btnCenterX = btnRect.left + btnRect.width / 2;
+            const btnCenterY = btnRect.top + btnRect.height / 2;
+            
+            const angle = Math.random() * Math.PI * 2;
+            const distance = Math.random() * 40 + 20;
+            const x = btnCenterX + Math.cos(angle) * distance;
+            const y = btnCenterY + Math.sin(angle) * distance;
+            
+            particle.style.left = `${x}px`;
+            particle.style.top = `${y}px`;
+            
+            // اللون
+            particle.style.backgroundColor = getParticleColor();
+            
+            // إضافة إلى الحاوية
+            particlesContainer.appendChild(particle);
+            
+            // الحركة والاختفاء
+            const dx = (Math.random() - 0.5) * 5;
+            const dy = (Math.random() - 0.5) * 5;
+            let opacity = 1;
+            
+            // حفظ معلومات الجسيم للتحديث
+            const particleInfo = {
+                element: particle,
+                x: x,
+                y: y,
+                dx: dx,
+                dy: dy,
+                opacity: opacity
+            };
+            
+            particles.push(particleInfo);
+            
+            // إزالة الجسيمات القديمة إذا تجاوز العدد 100
+            if (particles.length > 100) {
+                const oldParticle = particles.shift();
+                particlesContainer.removeChild(oldParticle.element);
+            }
+        }
+        
+        // تحديث الجسيمات
+        function updateParticles() {
+            particles.forEach((particle, index) => {
+                particle.x += particle.dx;
+                particle.y += particle.dy;
+                particle.opacity -= 0.01;
+                
+                particle.element.style.left = `${particle.x}px`;
+                particle.element.style.top = `${particle.y}px`;
+                particle.element.style.opacity = particle.opacity;
+                
+                // إزالة الجسيمات الشفافة
+                if (particle.opacity <= 0) {
+                    particlesContainer.removeChild(particle.element);
+                    particles.splice(index, 1);
+                }
+            });
+            
+            requestAnimationFrame(updateParticles);
+        }
+        
+        // الحصول على لون الجسيم
+        function getParticleColor() {
+            const selectedBg = backgroundSelect.value;
+            
+            switch (selectedBg) {
+                case 'bg1': return 'rgba(88, 133, 175, 0.8)';
+                case 'bg2': return 'rgba(248, 177, 149, 0.8)';
+                case 'bg3': return 'rgba(44, 83, 100, 0.8)';
+                case 'bg4': return 'rgba(75, 108, 183, 0.8)';
+                case 'bg5': return 'rgba(118, 184, 82, 0.8)';
+                case 'bg6': return 'rgba(97, 67, 133, 0.8)';
+                case 'bg7': return 'rgba(38, 208, 206, 0.8)';
+                default: return 'rgba(255, 255, 255, 0.8)';
+            }
+        }
+        
+        // تحديث لون الجسيمات
+        function updateParticlesColor() {
+            const color = getParticleColor();
+            particles.forEach(particle => {
+                particle.element.style.backgroundColor = color;
+            });
+        }
+        
+        // إضافة المستمعين للأحداث
+        countBtn.addEventListener('click', incrementCounter);
+        resetBtn.addEventListener('click', resetCounter);
+        targetBtn.addEventListener('click', setTargetCount);
+        backgroundSelect.addEventListener('change', changeBackground);
+        saveBtn.addEventListener('click', saveCount);
+        loadBtn.addEventListener('click', loadCount);
+        nightModeToggle.addEventListener('click', toggleNightMode);
+        
+        // مستمع لعرض السجل
+        historyBtn.addEventListener('click', function() {
+            if (historyContent.style.display === 'block') {
+                historyContent.style.display = 'none';
+                historyBtn.textContent = 'عرض السجل';
+            } else {
+                historyContent.style.display = 'block';
+                historyBtn.textContent = 'إخفاء السجل';
+            }
+        });
+        
+        // مستمعي أزرار الأذكار السريعة
+        presetBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const value = parseInt(btn.getAttribute('data-value'));
+                if (!isNaN(value) && value > 0) {
+                    // حفظ السجل الحالي قبل التغيير
+                    if (count > 0) {
+                        addToHistory();
+                    }
+                    
+                    targetCount = value;
+                    count = 0;
+                    updateCounter();
+                    showAchievement(`تم تحديد الهدف: ${value} - ${btn.textContent}`);
+                }
+            });
+        });
+        
+        // إضافة مستمع للمفاتيح للتسبيح باستخدام الفضاء أو Enter
+        document.addEventListener('keydown', function(event) {
+            if (event.key === ' ' || event.key === 'Enter') {
+                incrementCounter();
+                event.preventDefault();
+            }
+        });
+        
+        // تحميل البيانات المحفوظة عند بدء التطبيق
+        document.addEventListener('DOMContentLoaded', () => {
+            // تحميل الإحصائيات
+            const savedCount = localStorage.getItem('tasbihCount');
+            const savedTotalCount = localStorage.getItem('tasbihTotalCount');
+            const savedSessionStart = localStorage.getItem('tasbihSessionStart');
+            
+            if (savedCount !== null && savedTotalCount !== null) {
+                count = parseInt(savedCount);
+                totalCount = parseInt(savedTotalCount);
+                
+                if (savedSessionStart !== null) {
+                    sessionStart = new Date(parseInt(savedSessionStart));
+                }
+                
+                updateCounter();
+            }
+
+            // تحميل السجل
+            const savedHistory = localStorage.getItem('tasbihHistory');
+            if (savedHistory !== null) {
+                sessionHistory = JSON.parse(savedHistory);
+                updateHistoryDisplay();
+            }
+
+            // تحميل وضع الليل
+            const savedNightMode = localStorage.getItem('tasbihNightMode');
+            if (savedNightMode !== null) {
+                isNightMode = savedNightMode === 'true';
+                document.body.classList.toggle('night-mode', isNightMode);
+                nightModeToggle.textContent = isNightMode ? '☀️' : '🌙';
+            }
+
+            // بدء تحديث الجسيمات
+            requestAnimationFrame(updateParticles);
+        });
+    </script>
+</body>
+</html>
